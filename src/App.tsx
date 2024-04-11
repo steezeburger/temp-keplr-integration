@@ -50,12 +50,12 @@ function App() {
       const uri = `${CelestiaChainInfo.rest}/cosmos/bank/v1beta1/balances/${key.bech32Address}?pagination.limit=1000`;
 
       const data = await api<Balances>(uri);
-      const balance = data.balances.find((balance) => balance.denom === "uosmo");
-      const osmoDecimal = CelestiaChainInfo.currencies.find((currency) => currency.coinMinimalDenom === "uosmo")?.coinDecimals;
+      const balance = data.balances.find((balance) => balance.denom === "utia");
+      const tiaDecimal = CelestiaChainInfo.currencies.find((currency) => currency.coinMinimalDenom === "utia")?.coinDecimals;
 
       if(balance) {
-        const amount = new Dec(balance.amount, osmoDecimal);
-        setBalance(`${amount.toString(osmoDecimal)} TIA`)
+        const amount = new Dec(balance.amount, tiaDecimal);
+        setBalance(`${amount.toString(tiaDecimal)} TIA`)
       } else {
         setBalance(`0 TIA`)
       }
@@ -72,7 +72,7 @@ function App() {
           toAddress: recipient,
           amount: [
             {
-              denom: "uosmo",
+              denom: "utia",
               amount: DecUtils.getTenExponentN(6).mul(new Dec(amount)).truncate().toString(),
             },
           ],
@@ -84,7 +84,7 @@ function App() {
           CelestiaChainInfo,
           key.bech32Address,
           [protoMsgs],
-          [{denom: "uosmo",
+          [{denom: "utia",
             amount: "236",}]
           );
 
@@ -95,7 +95,7 @@ function App() {
             key.bech32Address,
             [protoMsgs],
             {
-              amount: [{denom: "uosmo",
+              amount: [{denom: "utia",
                 amount: "236",}],
               gas: Math.floor(gasUsed * 1.5).toString(),
             })
