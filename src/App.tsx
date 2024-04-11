@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {getKeplrFromWindow} from "./util/getKeplrFromWindow";
-import {OsmosisChainInfo} from "./constants";
+import {CelestiaChainInfo} from "./constants";
 import {Balances} from "./types/balance";
 import {Dec, DecUtils} from "@keplr-wallet/unit";
 import {sendMsgs} from "./util/sendMsgs";
@@ -27,7 +27,7 @@ function App() {
 
     if(keplr) {
       try {
-        await keplr.experimentalSuggestChain(OsmosisChainInfo);
+        await keplr.experimentalSuggestChain(CelestiaChainInfo);
       } catch (e) {
         if (e instanceof Error) {
           console.log(e.message);
@@ -37,34 +37,34 @@ function App() {
   }
 
   const getKeyFromKeplr = async () => {
-    const key = await window.keplr?.getKey(OsmosisChainInfo.chainId);
+    const key = await window.keplr?.getKey(CelestiaChainInfo.chainId);
     if (key) {
       setAddress(key.bech32Address)
     }
   }
 
   const getBalance = async () => {
-    const key = await window.keplr?.getKey(OsmosisChainInfo.chainId);
+    const key = await window.keplr?.getKey(CelestiaChainInfo.chainId);
 
     if (key) {
-      const uri = `${OsmosisChainInfo.rest}/cosmos/bank/v1beta1/balances/${key.bech32Address}?pagination.limit=1000`;
+      const uri = `${CelestiaChainInfo.rest}/cosmos/bank/v1beta1/balances/${key.bech32Address}?pagination.limit=1000`;
 
       const data = await api<Balances>(uri);
       const balance = data.balances.find((balance) => balance.denom === "uosmo");
-      const osmoDecimal = OsmosisChainInfo.currencies.find((currency) => currency.coinMinimalDenom === "uosmo")?.coinDecimals;
+      const osmoDecimal = CelestiaChainInfo.currencies.find((currency) => currency.coinMinimalDenom === "uosmo")?.coinDecimals;
 
       if(balance) {
         const amount = new Dec(balance.amount, osmoDecimal);
-        setBalance(`${amount.toString(osmoDecimal)} OSMO`)
+        setBalance(`${amount.toString(osmoDecimal)} TIA`)
       } else {
-        setBalance(`0 OSMO`)
+        setBalance(`0 TIA`)
       }
     }
   }
 
   const sendBalance = async () => {
     if (window.keplr) {
-      const key = await window.keplr.getKey(OsmosisChainInfo.chainId);
+      const key = await window.keplr.getKey(CelestiaChainInfo.chainId);
       const protoMsgs = {
         typeUrl: "/cosmos.bank.v1beta1.MsgSend",
         value: MsgSend.encode({
@@ -81,7 +81,7 @@ function App() {
 
       try {
         const gasUsed = await simulateMsgs(
-          OsmosisChainInfo,
+          CelestiaChainInfo,
           key.bech32Address,
           [protoMsgs],
           [{denom: "uosmo",
@@ -91,7 +91,7 @@ function App() {
         if(gasUsed) {
           await sendMsgs(
             window.keplr,
-            OsmosisChainInfo,
+            CelestiaChainInfo,
             key.bech32Address,
             [protoMsgs],
             {
@@ -125,7 +125,7 @@ function App() {
       <div className="item-container">
         <div className="item">
           <div className="item-title">
-            Get OSMO Address
+            Get TIA Address
           </div>
 
           <div className="item-content">
@@ -141,7 +141,7 @@ function App() {
 
         <div className="item">
           <div className="item-title">
-            Get OSMO Balance
+            Get TIA Balance
           </div>
 
           <div className="item-content">
@@ -153,7 +153,7 @@ function App() {
 
         <div className="item">
           <div className="item-title">
-            Send OSMO
+            Send TIA
           </div>
 
           <div className="item-content">
