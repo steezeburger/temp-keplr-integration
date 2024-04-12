@@ -85,10 +85,12 @@ export const MsgCreateBalancerPool = {
 
   fromJSON(object: any): MsgCreateBalancerPool {
     return {
-      sender: isSet(object.sender) ? String(object.sender) : "",
+      sender: isSet(object.sender) ? globalThis.String(object.sender) : "",
       poolParams: isSet(object.poolParams) ? PoolParams.fromJSON(object.poolParams) : undefined,
-      poolAssets: Array.isArray(object?.poolAssets) ? object.poolAssets.map((e: any) => PoolAsset.fromJSON(e)) : [],
-      futurePoolGovernor: isSet(object.futurePoolGovernor) ? String(object.futurePoolGovernor) : "",
+      poolAssets: globalThis.Array.isArray(object?.poolAssets)
+        ? object.poolAssets.map((e: any) => PoolAsset.fromJSON(e))
+        : [],
+      futurePoolGovernor: isSet(object.futurePoolGovernor) ? globalThis.String(object.futurePoolGovernor) : "",
     };
   },
 
@@ -160,7 +162,7 @@ export const MsgCreateBalancerPoolResponse = {
   },
 
   fromJSON(object: any): MsgCreateBalancerPoolResponse {
-    return { poolId: isSet(object.poolId) ? String(object.poolId) : "0" };
+    return { poolId: isSet(object.poolId) ? globalThis.String(object.poolId) : "0" };
   },
 
   toJSON(message: MsgCreateBalancerPoolResponse): unknown {
@@ -190,7 +192,8 @@ export interface Msg {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

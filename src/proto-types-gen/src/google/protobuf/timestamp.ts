@@ -55,15 +55,7 @@ export const protobufPackage = "google.protobuf";
  *     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
  *         .setNanos((int) ((millis % 1000) * 1000000)).build();
  *
- * Example 5: Compute Timestamp from Java `Instant.now()`.
- *
- *     Instant now = Instant.now();
- *
- *     Timestamp timestamp =
- *         Timestamp.newBuilder().setSeconds(now.getEpochSecond())
- *             .setNanos(now.getNano()).build();
- *
- * Example 6: Compute Timestamp from current time in Python.
+ * Example 5: Compute Timestamp from current time in Python.
  *
  *     timestamp = Timestamp()
  *     timestamp.GetCurrentTime()
@@ -92,7 +84,7 @@ export const protobufPackage = "google.protobuf";
  * [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
  * the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
  * the Joda Time's [`ISODateTimeFormat.dateTime()`](
- * http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+ * http://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime%2D%2D
  * ) to obtain a formatter capable of generating timestamps in this format.
  */
 export interface Timestamp {
@@ -158,8 +150,8 @@ export const Timestamp = {
 
   fromJSON(object: any): Timestamp {
     return {
-      seconds: isSet(object.seconds) ? String(object.seconds) : "0",
-      nanos: isSet(object.nanos) ? Number(object.nanos) : 0,
+      seconds: isSet(object.seconds) ? globalThis.String(object.seconds) : "0",
+      nanos: isSet(object.nanos) ? globalThis.Number(object.nanos) : 0,
     };
   },
 
@@ -188,7 +180,8 @@ export const Timestamp = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

@@ -359,7 +359,7 @@ export const HistoricalInfo = {
   fromJSON(object: any): HistoricalInfo {
     return {
       header: isSet(object.header) ? Header.fromJSON(object.header) : undefined,
-      valset: Array.isArray(object?.valset) ? object.valset.map((e: any) => Validator.fromJSON(e)) : [],
+      valset: globalThis.Array.isArray(object?.valset) ? object.valset.map((e: any) => Validator.fromJSON(e)) : [],
     };
   },
 
@@ -444,9 +444,9 @@ export const CommissionRates = {
 
   fromJSON(object: any): CommissionRates {
     return {
-      rate: isSet(object.rate) ? String(object.rate) : "",
-      maxRate: isSet(object.maxRate) ? String(object.maxRate) : "",
-      maxChangeRate: isSet(object.maxChangeRate) ? String(object.maxChangeRate) : "",
+      rate: isSet(object.rate) ? globalThis.String(object.rate) : "",
+      maxRate: isSet(object.maxRate) ? globalThis.String(object.maxRate) : "",
+      maxChangeRate: isSet(object.maxChangeRate) ? globalThis.String(object.maxChangeRate) : "",
     };
   },
 
@@ -629,11 +629,11 @@ export const Description = {
 
   fromJSON(object: any): Description {
     return {
-      moniker: isSet(object.moniker) ? String(object.moniker) : "",
-      identity: isSet(object.identity) ? String(object.identity) : "",
-      website: isSet(object.website) ? String(object.website) : "",
-      securityContact: isSet(object.securityContact) ? String(object.securityContact) : "",
-      details: isSet(object.details) ? String(object.details) : "",
+      moniker: isSet(object.moniker) ? globalThis.String(object.moniker) : "",
+      identity: isSet(object.identity) ? globalThis.String(object.identity) : "",
+      website: isSet(object.website) ? globalThis.String(object.website) : "",
+      securityContact: isSet(object.securityContact) ? globalThis.String(object.securityContact) : "",
+      details: isSet(object.details) ? globalThis.String(object.details) : "",
     };
   },
 
@@ -695,7 +695,7 @@ export const Validator = {
     if (message.consensusPubkey !== undefined) {
       Any.encode(message.consensusPubkey, writer.uint32(18).fork()).ldelim();
     }
-    if (message.jailed === true) {
+    if (message.jailed !== false) {
       writer.uint32(24).bool(message.jailed);
     }
     if (message.status !== 0) {
@@ -820,17 +820,17 @@ export const Validator = {
 
   fromJSON(object: any): Validator {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
+      operatorAddress: isSet(object.operatorAddress) ? globalThis.String(object.operatorAddress) : "",
       consensusPubkey: isSet(object.consensusPubkey) ? Any.fromJSON(object.consensusPubkey) : undefined,
-      jailed: isSet(object.jailed) ? Boolean(object.jailed) : false,
+      jailed: isSet(object.jailed) ? globalThis.Boolean(object.jailed) : false,
       status: isSet(object.status) ? bondStatusFromJSON(object.status) : 0,
-      tokens: isSet(object.tokens) ? String(object.tokens) : "",
-      delegatorShares: isSet(object.delegatorShares) ? String(object.delegatorShares) : "",
+      tokens: isSet(object.tokens) ? globalThis.String(object.tokens) : "",
+      delegatorShares: isSet(object.delegatorShares) ? globalThis.String(object.delegatorShares) : "",
       description: isSet(object.description) ? Description.fromJSON(object.description) : undefined,
-      unbondingHeight: isSet(object.unbondingHeight) ? String(object.unbondingHeight) : "0",
+      unbondingHeight: isSet(object.unbondingHeight) ? globalThis.String(object.unbondingHeight) : "0",
       unbondingTime: isSet(object.unbondingTime) ? fromJsonTimestamp(object.unbondingTime) : undefined,
       commission: isSet(object.commission) ? Commission.fromJSON(object.commission) : undefined,
-      minSelfDelegation: isSet(object.minSelfDelegation) ? String(object.minSelfDelegation) : "",
+      minSelfDelegation: isSet(object.minSelfDelegation) ? globalThis.String(object.minSelfDelegation) : "",
     };
   },
 
@@ -842,7 +842,7 @@ export const Validator = {
     if (message.consensusPubkey !== undefined) {
       obj.consensusPubkey = Any.toJSON(message.consensusPubkey);
     }
-    if (message.jailed === true) {
+    if (message.jailed !== false) {
       obj.jailed = message.jailed;
     }
     if (message.status !== 0) {
@@ -934,7 +934,11 @@ export const ValAddresses = {
   },
 
   fromJSON(object: any): ValAddresses {
-    return { addresses: Array.isArray(object?.addresses) ? object.addresses.map((e: any) => String(e)) : [] };
+    return {
+      addresses: globalThis.Array.isArray(object?.addresses)
+        ? object.addresses.map((e: any) => globalThis.String(e))
+        : [],
+    };
   },
 
   toJSON(message: ValAddresses): unknown {
@@ -1002,8 +1006,8 @@ export const DVPair = {
 
   fromJSON(object: any): DVPair {
     return {
-      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : "",
-      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
+      delegatorAddress: isSet(object.delegatorAddress) ? globalThis.String(object.delegatorAddress) : "",
+      validatorAddress: isSet(object.validatorAddress) ? globalThis.String(object.validatorAddress) : "",
     };
   },
 
@@ -1065,7 +1069,7 @@ export const DVPairs = {
   },
 
   fromJSON(object: any): DVPairs {
-    return { pairs: Array.isArray(object?.pairs) ? object.pairs.map((e: any) => DVPair.fromJSON(e)) : [] };
+    return { pairs: globalThis.Array.isArray(object?.pairs) ? object.pairs.map((e: any) => DVPair.fromJSON(e)) : [] };
   },
 
   toJSON(message: DVPairs): unknown {
@@ -1143,9 +1147,9 @@ export const DVVTriplet = {
 
   fromJSON(object: any): DVVTriplet {
     return {
-      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : "",
-      validatorSrcAddress: isSet(object.validatorSrcAddress) ? String(object.validatorSrcAddress) : "",
-      validatorDstAddress: isSet(object.validatorDstAddress) ? String(object.validatorDstAddress) : "",
+      delegatorAddress: isSet(object.delegatorAddress) ? globalThis.String(object.delegatorAddress) : "",
+      validatorSrcAddress: isSet(object.validatorSrcAddress) ? globalThis.String(object.validatorSrcAddress) : "",
+      validatorDstAddress: isSet(object.validatorDstAddress) ? globalThis.String(object.validatorDstAddress) : "",
     };
   },
 
@@ -1211,7 +1215,11 @@ export const DVVTriplets = {
   },
 
   fromJSON(object: any): DVVTriplets {
-    return { triplets: Array.isArray(object?.triplets) ? object.triplets.map((e: any) => DVVTriplet.fromJSON(e)) : [] };
+    return {
+      triplets: globalThis.Array.isArray(object?.triplets)
+        ? object.triplets.map((e: any) => DVVTriplet.fromJSON(e))
+        : [],
+    };
   },
 
   toJSON(message: DVVTriplets): unknown {
@@ -1289,9 +1297,9 @@ export const Delegation = {
 
   fromJSON(object: any): Delegation {
     return {
-      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : "",
-      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
-      shares: isSet(object.shares) ? String(object.shares) : "",
+      delegatorAddress: isSet(object.delegatorAddress) ? globalThis.String(object.delegatorAddress) : "",
+      validatorAddress: isSet(object.validatorAddress) ? globalThis.String(object.validatorAddress) : "",
+      shares: isSet(object.shares) ? globalThis.String(object.shares) : "",
     };
   },
 
@@ -1378,9 +1386,9 @@ export const UnbondingDelegation = {
 
   fromJSON(object: any): UnbondingDelegation {
     return {
-      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : "",
-      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
-      entries: Array.isArray(object?.entries)
+      delegatorAddress: isSet(object.delegatorAddress) ? globalThis.String(object.delegatorAddress) : "",
+      validatorAddress: isSet(object.validatorAddress) ? globalThis.String(object.validatorAddress) : "",
+      entries: globalThis.Array.isArray(object?.entries)
         ? object.entries.map((e: any) => UnbondingDelegationEntry.fromJSON(e))
         : [],
     };
@@ -1479,10 +1487,10 @@ export const UnbondingDelegationEntry = {
 
   fromJSON(object: any): UnbondingDelegationEntry {
     return {
-      creationHeight: isSet(object.creationHeight) ? String(object.creationHeight) : "0",
+      creationHeight: isSet(object.creationHeight) ? globalThis.String(object.creationHeight) : "0",
       completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
-      initialBalance: isSet(object.initialBalance) ? String(object.initialBalance) : "",
-      balance: isSet(object.balance) ? String(object.balance) : "",
+      initialBalance: isSet(object.initialBalance) ? globalThis.String(object.initialBalance) : "",
+      balance: isSet(object.balance) ? globalThis.String(object.balance) : "",
     };
   },
 
@@ -1583,10 +1591,10 @@ export const RedelegationEntry = {
 
   fromJSON(object: any): RedelegationEntry {
     return {
-      creationHeight: isSet(object.creationHeight) ? String(object.creationHeight) : "0",
+      creationHeight: isSet(object.creationHeight) ? globalThis.String(object.creationHeight) : "0",
       completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
-      initialBalance: isSet(object.initialBalance) ? String(object.initialBalance) : "",
-      sharesDst: isSet(object.sharesDst) ? String(object.sharesDst) : "",
+      initialBalance: isSet(object.initialBalance) ? globalThis.String(object.initialBalance) : "",
+      sharesDst: isSet(object.sharesDst) ? globalThis.String(object.sharesDst) : "",
     };
   },
 
@@ -1687,10 +1695,12 @@ export const Redelegation = {
 
   fromJSON(object: any): Redelegation {
     return {
-      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : "",
-      validatorSrcAddress: isSet(object.validatorSrcAddress) ? String(object.validatorSrcAddress) : "",
-      validatorDstAddress: isSet(object.validatorDstAddress) ? String(object.validatorDstAddress) : "",
-      entries: Array.isArray(object?.entries) ? object.entries.map((e: any) => RedelegationEntry.fromJSON(e)) : [],
+      delegatorAddress: isSet(object.delegatorAddress) ? globalThis.String(object.delegatorAddress) : "",
+      validatorSrcAddress: isSet(object.validatorSrcAddress) ? globalThis.String(object.validatorSrcAddress) : "",
+      validatorDstAddress: isSet(object.validatorDstAddress) ? globalThis.String(object.validatorDstAddress) : "",
+      entries: globalThis.Array.isArray(object?.entries)
+        ? object.entries.map((e: any) => RedelegationEntry.fromJSON(e))
+        : [],
     };
   },
 
@@ -1802,10 +1812,10 @@ export const Params = {
   fromJSON(object: any): Params {
     return {
       unbondingTime: isSet(object.unbondingTime) ? Duration.fromJSON(object.unbondingTime) : undefined,
-      maxValidators: isSet(object.maxValidators) ? Number(object.maxValidators) : 0,
-      maxEntries: isSet(object.maxEntries) ? Number(object.maxEntries) : 0,
-      historicalEntries: isSet(object.historicalEntries) ? Number(object.historicalEntries) : 0,
-      bondDenom: isSet(object.bondDenom) ? String(object.bondDenom) : "",
+      maxValidators: isSet(object.maxValidators) ? globalThis.Number(object.maxValidators) : 0,
+      maxEntries: isSet(object.maxEntries) ? globalThis.Number(object.maxEntries) : 0,
+      historicalEntries: isSet(object.historicalEntries) ? globalThis.Number(object.historicalEntries) : 0,
+      bondDenom: isSet(object.bondDenom) ? globalThis.String(object.bondDenom) : "",
     };
   },
 
@@ -1973,7 +1983,7 @@ export const RedelegationEntryResponse = {
       redelegationEntry: isSet(object.redelegationEntry)
         ? RedelegationEntry.fromJSON(object.redelegationEntry)
         : undefined,
-      balance: isSet(object.balance) ? String(object.balance) : "",
+      balance: isSet(object.balance) ? globalThis.String(object.balance) : "",
     };
   },
 
@@ -2049,7 +2059,7 @@ export const RedelegationResponse = {
   fromJSON(object: any): RedelegationResponse {
     return {
       redelegation: isSet(object.redelegation) ? Redelegation.fromJSON(object.redelegation) : undefined,
-      entries: Array.isArray(object?.entries)
+      entries: globalThis.Array.isArray(object?.entries)
         ? object.entries.map((e: any) => RedelegationEntryResponse.fromJSON(e))
         : [],
     };
@@ -2126,8 +2136,8 @@ export const Pool = {
 
   fromJSON(object: any): Pool {
     return {
-      notBondedTokens: isSet(object.notBondedTokens) ? String(object.notBondedTokens) : "",
-      bondedTokens: isSet(object.bondedTokens) ? String(object.bondedTokens) : "",
+      notBondedTokens: isSet(object.notBondedTokens) ? globalThis.String(object.notBondedTokens) : "",
+      bondedTokens: isSet(object.bondedTokens) ? globalThis.String(object.bondedTokens) : "",
     };
   },
 
@@ -2156,7 +2166,8 @@ export const Pool = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
@@ -2171,16 +2182,16 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = (Number(t.seconds) || 0) * 1_000;
+  let millis = (globalThis.Number(t.seconds) || 0) * 1_000;
   millis += (t.nanos || 0) / 1_000_000;
-  return new Date(millis);
+  return new globalThis.Date(millis);
 }
 
 function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
+  if (o instanceof globalThis.Date) {
     return o;
   } else if (typeof o === "string") {
-    return new Date(o);
+    return new globalThis.Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }

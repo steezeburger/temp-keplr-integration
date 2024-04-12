@@ -294,7 +294,7 @@ export const AccessConfig = {
   fromJSON(object: any): AccessConfig {
     return {
       permission: isSet(object.permission) ? accessTypeFromJSON(object.permission) : 0,
-      address: isSet(object.address) ? String(object.address) : "",
+      address: isSet(object.address) ? globalThis.String(object.address) : "",
     };
   },
 
@@ -381,7 +381,7 @@ export const Params = {
       instantiateDefaultPermission: isSet(object.instantiateDefaultPermission)
         ? accessTypeFromJSON(object.instantiateDefaultPermission)
         : 0,
-      maxWasmCodeSize: isSet(object.maxWasmCodeSize) ? String(object.maxWasmCodeSize) : "0",
+      maxWasmCodeSize: isSet(object.maxWasmCodeSize) ? globalThis.String(object.maxWasmCodeSize) : "0",
     };
   },
 
@@ -471,7 +471,7 @@ export const CodeInfo = {
   fromJSON(object: any): CodeInfo {
     return {
       codeHash: isSet(object.codeHash) ? bytesFromBase64(object.codeHash) : new Uint8Array(0),
-      creator: isSet(object.creator) ? String(object.creator) : "",
+      creator: isSet(object.creator) ? globalThis.String(object.creator) : "",
       instantiateConfig: isSet(object.instantiateConfig) ? AccessConfig.fromJSON(object.instantiateConfig) : undefined,
     };
   },
@@ -601,12 +601,12 @@ export const ContractInfo = {
 
   fromJSON(object: any): ContractInfo {
     return {
-      codeId: isSet(object.codeId) ? String(object.codeId) : "0",
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      admin: isSet(object.admin) ? String(object.admin) : "",
-      label: isSet(object.label) ? String(object.label) : "",
+      codeId: isSet(object.codeId) ? globalThis.String(object.codeId) : "0",
+      creator: isSet(object.creator) ? globalThis.String(object.creator) : "",
+      admin: isSet(object.admin) ? globalThis.String(object.admin) : "",
+      label: isSet(object.label) ? globalThis.String(object.label) : "",
       created: isSet(object.created) ? AbsoluteTxPosition.fromJSON(object.created) : undefined,
-      ibcPortId: isSet(object.ibcPortId) ? String(object.ibcPortId) : "",
+      ibcPortId: isSet(object.ibcPortId) ? globalThis.String(object.ibcPortId) : "",
       extension: isSet(object.extension) ? Any.fromJSON(object.extension) : undefined,
     };
   },
@@ -725,7 +725,7 @@ export const ContractCodeHistoryEntry = {
   fromJSON(object: any): ContractCodeHistoryEntry {
     return {
       operation: isSet(object.operation) ? contractCodeHistoryOperationTypeFromJSON(object.operation) : 0,
-      codeId: isSet(object.codeId) ? String(object.codeId) : "0",
+      codeId: isSet(object.codeId) ? globalThis.String(object.codeId) : "0",
       updated: isSet(object.updated) ? AbsoluteTxPosition.fromJSON(object.updated) : undefined,
       msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(0),
     };
@@ -810,8 +810,8 @@ export const AbsoluteTxPosition = {
 
   fromJSON(object: any): AbsoluteTxPosition {
     return {
-      blockHeight: isSet(object.blockHeight) ? String(object.blockHeight) : "0",
-      txIndex: isSet(object.txIndex) ? String(object.txIndex) : "0",
+      blockHeight: isSet(object.blockHeight) ? globalThis.String(object.blockHeight) : "0",
+      txIndex: isSet(object.txIndex) ? globalThis.String(object.txIndex) : "0",
     };
   },
 
@@ -911,30 +911,11 @@ export const Model = {
   },
 };
 
-declare const self: any | undefined;
-declare const window: any | undefined;
-declare const global: any | undefined;
-const tsProtoGlobalThis: any = (() => {
-  if (typeof globalThis !== "undefined") {
-    return globalThis;
-  }
-  if (typeof self !== "undefined") {
-    return self;
-  }
-  if (typeof window !== "undefined") {
-    return window;
-  }
-  if (typeof global !== "undefined") {
-    return global;
-  }
-  throw "Unable to locate global object";
-})();
-
 function bytesFromBase64(b64: string): Uint8Array {
-  if (tsProtoGlobalThis.Buffer) {
-    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
+  if ((globalThis as any).Buffer) {
+    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = tsProtoGlobalThis.atob(b64);
+    const bin = globalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -944,21 +925,22 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (tsProtoGlobalThis.Buffer) {
-    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
+  if ((globalThis as any).Buffer) {
+    return globalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
-      bin.push(String.fromCharCode(byte));
+      bin.push(globalThis.String.fromCharCode(byte));
     });
-    return tsProtoGlobalThis.btoa(bin.join(""));
+    return globalThis.btoa(bin.join(""));
   }
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

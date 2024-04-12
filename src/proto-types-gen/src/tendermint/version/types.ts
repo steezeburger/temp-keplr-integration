@@ -71,8 +71,8 @@ export const App = {
 
   fromJSON(object: any): App {
     return {
-      protocol: isSet(object.protocol) ? String(object.protocol) : "0",
-      software: isSet(object.software) ? String(object.software) : "",
+      protocol: isSet(object.protocol) ? globalThis.String(object.protocol) : "0",
+      software: isSet(object.software) ? globalThis.String(object.software) : "",
     };
   },
 
@@ -145,8 +145,8 @@ export const Consensus = {
 
   fromJSON(object: any): Consensus {
     return {
-      block: isSet(object.block) ? String(object.block) : "0",
-      app: isSet(object.app) ? String(object.app) : "0",
+      block: isSet(object.block) ? globalThis.String(object.block) : "0",
+      app: isSet(object.app) ? globalThis.String(object.app) : "0",
     };
   },
 
@@ -175,7 +175,8 @@ export const Consensus = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

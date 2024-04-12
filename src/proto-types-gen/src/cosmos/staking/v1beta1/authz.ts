@@ -229,7 +229,9 @@ export const StakeAuthorization_Validators = {
   },
 
   fromJSON(object: any): StakeAuthorization_Validators {
-    return { address: Array.isArray(object?.address) ? object.address.map((e: any) => String(e)) : [] };
+    return {
+      address: globalThis.Array.isArray(object?.address) ? object.address.map((e: any) => globalThis.String(e)) : [],
+    };
   },
 
   toJSON(message: StakeAuthorization_Validators): unknown {
@@ -255,7 +257,8 @@ export const StakeAuthorization_Validators = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

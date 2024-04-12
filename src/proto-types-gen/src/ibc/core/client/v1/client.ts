@@ -154,7 +154,7 @@ export const IdentifiedClientState = {
 
   fromJSON(object: any): IdentifiedClientState {
     return {
-      clientId: isSet(object.clientId) ? String(object.clientId) : "",
+      clientId: isSet(object.clientId) ? globalThis.String(object.clientId) : "",
       clientState: isSet(object.clientState) ? Any.fromJSON(object.clientState) : undefined,
     };
   },
@@ -308,8 +308,8 @@ export const ClientConsensusStates = {
 
   fromJSON(object: any): ClientConsensusStates {
     return {
-      clientId: isSet(object.clientId) ? String(object.clientId) : "",
-      consensusStates: Array.isArray(object?.consensusStates)
+      clientId: isSet(object.clientId) ? globalThis.String(object.clientId) : "",
+      consensusStates: globalThis.Array.isArray(object?.consensusStates)
         ? object.consensusStates.map((e: any) => ConsensusStateWithHeight.fromJSON(e))
         : [],
     };
@@ -404,10 +404,10 @@ export const ClientUpdateProposal = {
 
   fromJSON(object: any): ClientUpdateProposal {
     return {
-      title: isSet(object.title) ? String(object.title) : "",
-      description: isSet(object.description) ? String(object.description) : "",
-      subjectClientId: isSet(object.subjectClientId) ? String(object.subjectClientId) : "",
-      substituteClientId: isSet(object.substituteClientId) ? String(object.substituteClientId) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      subjectClientId: isSet(object.subjectClientId) ? globalThis.String(object.subjectClientId) : "",
+      substituteClientId: isSet(object.substituteClientId) ? globalThis.String(object.substituteClientId) : "",
     };
   },
 
@@ -508,8 +508,8 @@ export const UpgradeProposal = {
 
   fromJSON(object: any): UpgradeProposal {
     return {
-      title: isSet(object.title) ? String(object.title) : "",
-      description: isSet(object.description) ? String(object.description) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
       plan: isSet(object.plan) ? Plan.fromJSON(object.plan) : undefined,
       upgradedClientState: isSet(object.upgradedClientState) ? Any.fromJSON(object.upgradedClientState) : undefined,
     };
@@ -594,8 +594,8 @@ export const Height = {
 
   fromJSON(object: any): Height {
     return {
-      revisionNumber: isSet(object.revisionNumber) ? String(object.revisionNumber) : "0",
-      revisionHeight: isSet(object.revisionHeight) ? String(object.revisionHeight) : "0",
+      revisionNumber: isSet(object.revisionNumber) ? globalThis.String(object.revisionNumber) : "0",
+      revisionHeight: isSet(object.revisionHeight) ? globalThis.String(object.revisionHeight) : "0",
     };
   },
 
@@ -658,7 +658,9 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      allowedClients: Array.isArray(object?.allowedClients) ? object.allowedClients.map((e: any) => String(e)) : [],
+      allowedClients: globalThis.Array.isArray(object?.allowedClients)
+        ? object.allowedClients.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
@@ -683,7 +685,8 @@ export const Params = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

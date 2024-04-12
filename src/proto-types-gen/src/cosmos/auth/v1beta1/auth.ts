@@ -100,10 +100,10 @@ export const BaseAccount = {
 
   fromJSON(object: any): BaseAccount {
     return {
-      address: isSet(object.address) ? String(object.address) : "",
+      address: isSet(object.address) ? globalThis.String(object.address) : "",
       pubKey: isSet(object.pubKey) ? Any.fromJSON(object.pubKey) : undefined,
-      accountNumber: isSet(object.accountNumber) ? String(object.accountNumber) : "0",
-      sequence: isSet(object.sequence) ? String(object.sequence) : "0",
+      accountNumber: isSet(object.accountNumber) ? globalThis.String(object.accountNumber) : "0",
+      sequence: isSet(object.sequence) ? globalThis.String(object.sequence) : "0",
     };
   },
 
@@ -197,8 +197,10 @@ export const ModuleAccount = {
   fromJSON(object: any): ModuleAccount {
     return {
       baseAccount: isSet(object.baseAccount) ? BaseAccount.fromJSON(object.baseAccount) : undefined,
-      name: isSet(object.name) ? String(object.name) : "",
-      permissions: Array.isArray(object?.permissions) ? object.permissions.map((e: any) => String(e)) : [],
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      permissions: globalThis.Array.isArray(object?.permissions)
+        ? object.permissions.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
@@ -313,11 +315,13 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      maxMemoCharacters: isSet(object.maxMemoCharacters) ? String(object.maxMemoCharacters) : "0",
-      txSigLimit: isSet(object.txSigLimit) ? String(object.txSigLimit) : "0",
-      txSizeCostPerByte: isSet(object.txSizeCostPerByte) ? String(object.txSizeCostPerByte) : "0",
-      sigVerifyCostEd25519: isSet(object.sigVerifyCostEd25519) ? String(object.sigVerifyCostEd25519) : "0",
-      sigVerifyCostSecp256k1: isSet(object.sigVerifyCostSecp256k1) ? String(object.sigVerifyCostSecp256k1) : "0",
+      maxMemoCharacters: isSet(object.maxMemoCharacters) ? globalThis.String(object.maxMemoCharacters) : "0",
+      txSigLimit: isSet(object.txSigLimit) ? globalThis.String(object.txSigLimit) : "0",
+      txSizeCostPerByte: isSet(object.txSizeCostPerByte) ? globalThis.String(object.txSizeCostPerByte) : "0",
+      sigVerifyCostEd25519: isSet(object.sigVerifyCostEd25519) ? globalThis.String(object.sigVerifyCostEd25519) : "0",
+      sigVerifyCostSecp256k1: isSet(object.sigVerifyCostSecp256k1)
+        ? globalThis.String(object.sigVerifyCostSecp256k1)
+        : "0",
     };
   },
 
@@ -358,7 +362,8 @@ export const Params = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

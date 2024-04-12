@@ -160,14 +160,14 @@ export const MsgTransfer = {
 
   fromJSON(object: any): MsgTransfer {
     return {
-      sourcePort: isSet(object.sourcePort) ? String(object.sourcePort) : "",
-      sourceChannel: isSet(object.sourceChannel) ? String(object.sourceChannel) : "",
+      sourcePort: isSet(object.sourcePort) ? globalThis.String(object.sourcePort) : "",
+      sourceChannel: isSet(object.sourceChannel) ? globalThis.String(object.sourceChannel) : "",
       token: isSet(object.token) ? Coin.fromJSON(object.token) : undefined,
-      sender: isSet(object.sender) ? String(object.sender) : "",
-      receiver: isSet(object.receiver) ? String(object.receiver) : "",
+      sender: isSet(object.sender) ? globalThis.String(object.sender) : "",
+      receiver: isSet(object.receiver) ? globalThis.String(object.receiver) : "",
       timeoutHeight: isSet(object.timeoutHeight) ? Height.fromJSON(object.timeoutHeight) : undefined,
-      timeoutTimestamp: isSet(object.timeoutTimestamp) ? String(object.timeoutTimestamp) : "0",
-      memo: isSet(object.memo) ? String(object.memo) : "",
+      timeoutTimestamp: isSet(object.timeoutTimestamp) ? globalThis.String(object.timeoutTimestamp) : "0",
+      memo: isSet(object.memo) ? globalThis.String(object.memo) : "",
     };
   },
 
@@ -271,7 +271,8 @@ export interface Msg {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

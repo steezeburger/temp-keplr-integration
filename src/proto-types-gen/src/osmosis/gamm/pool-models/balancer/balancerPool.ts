@@ -185,10 +185,10 @@ export const SmoothWeightChangeParams = {
     return {
       startTime: isSet(object.startTime) ? fromJsonTimestamp(object.startTime) : undefined,
       duration: isSet(object.duration) ? Duration.fromJSON(object.duration) : undefined,
-      initialPoolWeights: Array.isArray(object?.initialPoolWeights)
+      initialPoolWeights: globalThis.Array.isArray(object?.initialPoolWeights)
         ? object.initialPoolWeights.map((e: any) => PoolAsset.fromJSON(e))
         : [],
-      targetPoolWeights: Array.isArray(object?.targetPoolWeights)
+      targetPoolWeights: globalThis.Array.isArray(object?.targetPoolWeights)
         ? object.targetPoolWeights.map((e: any) => PoolAsset.fromJSON(e))
         : [],
     };
@@ -283,8 +283,8 @@ export const PoolParams = {
 
   fromJSON(object: any): PoolParams {
     return {
-      swapFee: isSet(object.swapFee) ? String(object.swapFee) : "",
-      exitFee: isSet(object.exitFee) ? String(object.exitFee) : "",
+      swapFee: isSet(object.swapFee) ? globalThis.String(object.swapFee) : "",
+      exitFee: isSet(object.exitFee) ? globalThis.String(object.exitFee) : "",
       smoothWeightChangeParams: isSet(object.smoothWeightChangeParams)
         ? SmoothWeightChangeParams.fromJSON(object.smoothWeightChangeParams)
         : undefined,
@@ -368,7 +368,7 @@ export const PoolAsset = {
   fromJSON(object: any): PoolAsset {
     return {
       token: isSet(object.token) ? Coin.fromJSON(object.token) : undefined,
-      weight: isSet(object.weight) ? String(object.weight) : "",
+      weight: isSet(object.weight) ? globalThis.String(object.weight) : "",
     };
   },
 
@@ -499,13 +499,15 @@ export const Pool = {
 
   fromJSON(object: any): Pool {
     return {
-      address: isSet(object.address) ? String(object.address) : "",
-      id: isSet(object.id) ? String(object.id) : "0",
+      address: isSet(object.address) ? globalThis.String(object.address) : "",
+      id: isSet(object.id) ? globalThis.String(object.id) : "0",
       poolParams: isSet(object.poolParams) ? PoolParams.fromJSON(object.poolParams) : undefined,
-      futurePoolGovernor: isSet(object.futurePoolGovernor) ? String(object.futurePoolGovernor) : "",
+      futurePoolGovernor: isSet(object.futurePoolGovernor) ? globalThis.String(object.futurePoolGovernor) : "",
       totalShares: isSet(object.totalShares) ? Coin.fromJSON(object.totalShares) : undefined,
-      poolAssets: Array.isArray(object?.poolAssets) ? object.poolAssets.map((e: any) => PoolAsset.fromJSON(e)) : [],
-      totalWeight: isSet(object.totalWeight) ? String(object.totalWeight) : "",
+      poolAssets: globalThis.Array.isArray(object?.poolAssets)
+        ? object.poolAssets.map((e: any) => PoolAsset.fromJSON(e))
+        : [],
+      totalWeight: isSet(object.totalWeight) ? globalThis.String(object.totalWeight) : "",
     };
   },
 
@@ -558,7 +560,8 @@ export const Pool = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
@@ -573,16 +576,16 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = (Number(t.seconds) || 0) * 1_000;
+  let millis = (globalThis.Number(t.seconds) || 0) * 1_000;
   millis += (t.nanos || 0) / 1_000_000;
-  return new Date(millis);
+  return new globalThis.Date(millis);
 }
 
 function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
+  if (o instanceof globalThis.Date) {
     return o;
   } else if (typeof o === "string") {
-    return new Date(o);
+    return new globalThis.Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }

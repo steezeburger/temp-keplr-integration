@@ -98,8 +98,8 @@ export const PoolParams = {
 
   fromJSON(object: any): PoolParams {
     return {
-      swapFee: isSet(object.swapFee) ? String(object.swapFee) : "",
-      exitFee: isSet(object.exitFee) ? String(object.exitFee) : "",
+      swapFee: isSet(object.swapFee) ? globalThis.String(object.swapFee) : "",
+      exitFee: isSet(object.exitFee) ? globalThis.String(object.exitFee) : "",
     };
   },
 
@@ -253,14 +253,20 @@ export const Pool = {
 
   fromJSON(object: any): Pool {
     return {
-      address: isSet(object.address) ? String(object.address) : "",
-      id: isSet(object.id) ? String(object.id) : "0",
+      address: isSet(object.address) ? globalThis.String(object.address) : "",
+      id: isSet(object.id) ? globalThis.String(object.id) : "0",
       poolParams: isSet(object.poolParams) ? PoolParams.fromJSON(object.poolParams) : undefined,
-      futurePoolGovernor: isSet(object.futurePoolGovernor) ? String(object.futurePoolGovernor) : "",
+      futurePoolGovernor: isSet(object.futurePoolGovernor) ? globalThis.String(object.futurePoolGovernor) : "",
       totalShares: isSet(object.totalShares) ? Coin.fromJSON(object.totalShares) : undefined,
-      poolLiquidity: Array.isArray(object?.poolLiquidity) ? object.poolLiquidity.map((e: any) => Coin.fromJSON(e)) : [],
-      scalingFactors: Array.isArray(object?.scalingFactors) ? object.scalingFactors.map((e: any) => String(e)) : [],
-      scalingFactorController: isSet(object.scalingFactorController) ? String(object.scalingFactorController) : "",
+      poolLiquidity: globalThis.Array.isArray(object?.poolLiquidity)
+        ? object.poolLiquidity.map((e: any) => Coin.fromJSON(e))
+        : [],
+      scalingFactors: globalThis.Array.isArray(object?.scalingFactors)
+        ? object.scalingFactors.map((e: any) => globalThis.String(e))
+        : [],
+      scalingFactorController: isSet(object.scalingFactorController)
+        ? globalThis.String(object.scalingFactorController)
+        : "",
     };
   },
 
@@ -317,7 +323,8 @@ export const Pool = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

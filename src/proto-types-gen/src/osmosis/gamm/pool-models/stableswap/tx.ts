@@ -140,14 +140,18 @@ export const MsgCreateStableswapPool = {
 
   fromJSON(object: any): MsgCreateStableswapPool {
     return {
-      sender: isSet(object.sender) ? String(object.sender) : "",
+      sender: isSet(object.sender) ? globalThis.String(object.sender) : "",
       poolParams: isSet(object.poolParams) ? PoolParams.fromJSON(object.poolParams) : undefined,
-      initialPoolLiquidity: Array.isArray(object?.initialPoolLiquidity)
+      initialPoolLiquidity: globalThis.Array.isArray(object?.initialPoolLiquidity)
         ? object.initialPoolLiquidity.map((e: any) => Coin.fromJSON(e))
         : [],
-      scalingFactors: Array.isArray(object?.scalingFactors) ? object.scalingFactors.map((e: any) => String(e)) : [],
-      futurePoolGovernor: isSet(object.futurePoolGovernor) ? String(object.futurePoolGovernor) : "",
-      scalingFactorController: isSet(object.scalingFactorController) ? String(object.scalingFactorController) : "",
+      scalingFactors: globalThis.Array.isArray(object?.scalingFactors)
+        ? object.scalingFactors.map((e: any) => globalThis.String(e))
+        : [],
+      futurePoolGovernor: isSet(object.futurePoolGovernor) ? globalThis.String(object.futurePoolGovernor) : "",
+      scalingFactorController: isSet(object.scalingFactorController)
+        ? globalThis.String(object.scalingFactorController)
+        : "",
     };
   },
 
@@ -227,7 +231,7 @@ export const MsgCreateStableswapPoolResponse = {
   },
 
   fromJSON(object: any): MsgCreateStableswapPoolResponse {
-    return { poolId: isSet(object.poolId) ? String(object.poolId) : "0" };
+    return { poolId: isSet(object.poolId) ? globalThis.String(object.poolId) : "0" };
   },
 
   toJSON(message: MsgCreateStableswapPoolResponse): unknown {
@@ -319,9 +323,11 @@ export const MsgStableSwapAdjustScalingFactors = {
 
   fromJSON(object: any): MsgStableSwapAdjustScalingFactors {
     return {
-      sender: isSet(object.sender) ? String(object.sender) : "",
-      poolId: isSet(object.poolId) ? String(object.poolId) : "0",
-      scalingFactors: Array.isArray(object?.scalingFactors) ? object.scalingFactors.map((e: any) => String(e)) : [],
+      sender: isSet(object.sender) ? globalThis.String(object.sender) : "",
+      poolId: isSet(object.poolId) ? globalThis.String(object.poolId) : "0",
+      scalingFactors: globalThis.Array.isArray(object?.scalingFactors)
+        ? object.scalingFactors.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
@@ -412,7 +418,8 @@ export interface Msg {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

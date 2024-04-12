@@ -102,8 +102,8 @@ export const MsgSetWithdrawAddress = {
 
   fromJSON(object: any): MsgSetWithdrawAddress {
     return {
-      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : "",
-      withdrawAddress: isSet(object.withdrawAddress) ? String(object.withdrawAddress) : "",
+      delegatorAddress: isSet(object.delegatorAddress) ? globalThis.String(object.delegatorAddress) : "",
+      withdrawAddress: isSet(object.withdrawAddress) ? globalThis.String(object.withdrawAddress) : "",
     };
   },
 
@@ -219,8 +219,8 @@ export const MsgWithdrawDelegatorReward = {
 
   fromJSON(object: any): MsgWithdrawDelegatorReward {
     return {
-      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : "",
-      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
+      delegatorAddress: isSet(object.delegatorAddress) ? globalThis.String(object.delegatorAddress) : "",
+      validatorAddress: isSet(object.validatorAddress) ? globalThis.String(object.validatorAddress) : "",
     };
   },
 
@@ -329,7 +329,7 @@ export const MsgWithdrawValidatorCommission = {
   },
 
   fromJSON(object: any): MsgWithdrawValidatorCommission {
-    return { validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "" };
+    return { validatorAddress: isSet(object.validatorAddress) ? globalThis.String(object.validatorAddress) : "" };
   },
 
   toJSON(message: MsgWithdrawValidatorCommission): unknown {
@@ -446,8 +446,8 @@ export const MsgFundCommunityPool = {
 
   fromJSON(object: any): MsgFundCommunityPool {
     return {
-      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : [],
-      depositor: isSet(object.depositor) ? String(object.depositor) : "",
+      amount: globalThis.Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : [],
+      depositor: isSet(object.depositor) ? globalThis.String(object.depositor) : "",
     };
   },
 
@@ -543,7 +543,8 @@ export interface Msg {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
