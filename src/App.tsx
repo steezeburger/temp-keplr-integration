@@ -79,6 +79,9 @@ function App() {
         }).finish(),
       }
 
+      const memo = 'Yo, Astriaaaa! the recipient on the rollup is: ' + recipient + '.';
+
+
       try {
         const gasUsed = await simulateMsgs(
           CelestiaChainInfo,
@@ -98,7 +101,8 @@ function App() {
               amount: [{denom: "utia",
                 amount: "236",}],
               gas: Math.floor(gasUsed * 1.5).toString(),
-            })
+            },
+            memo)
         }
       } catch (e) {
         if (e instanceof Error) {

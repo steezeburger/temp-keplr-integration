@@ -64,8 +64,9 @@ export const simulateMsgs = async (
             signatures: [new Uint8Array(64)],
         }).finish()
 
+        // @note temporary dev workaround for the CORS issue.
         const simulatedResult = await api<GasSimulateResponse>(
-            `${CelestiaChainInfo.rest}/cosmos/tx/v1beta1/simulate`,
+            `/cosmos/tx/v1beta1/simulate`,
             {
                 method: 'POST',
                 headers: {
@@ -76,6 +77,18 @@ export const simulateMsgs = async (
                 }),
             }
         )
+        // const simulatedResult = await api<GasSimulateResponse>(
+        //     `${CelestiaChainInfo.rest}/cosmos/tx/v1beta1/simulate`,
+        //     {
+        //         method: 'POST',
+        //         headers: {
+        //             'content-type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             tx_bytes: Buffer.from(unsignedTx).toString('base64'),
+        //         }),
+        //     }
+        // )
 
         const gasUsed = parseInt(simulatedResult.gas_info.gas_used)
         if (Number.isNaN(gasUsed)) {

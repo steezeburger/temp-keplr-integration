@@ -1,6 +1,7 @@
 {
   "name": "keplr-example",
   "version": "0.1.0",
+  "proxy": "https://api-mocha.pops.one",
   "private": true,
   "dependencies": {
     "@keplr-wallet/common": "^0.12.22",
