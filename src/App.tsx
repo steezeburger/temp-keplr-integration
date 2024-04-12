@@ -4,6 +4,7 @@ import {CelestiaChainInfo} from "./constants";
 import {Balances} from "./types/balance";
 import {Dec, DecUtils} from "@keplr-wallet/unit";
 import {sendMsgs} from "./util/sendMsgs";
+import { sendIbcTransfer } from "./util/ibc-transfer";
 import {api} from "./util/api";
 import {simulateMsgs} from "./util/simulateMsgs";
 import {MsgSend} from "./proto-types-gen/src/cosmos/bank/v1beta1/tx";
@@ -62,6 +63,9 @@ function App() {
     }
   }
 
+
+
+
   const sendBalance = async () => {
     if (window.keplr) {
       const key = await window.keplr.getKey(CelestiaChainInfo.chainId);
@@ -80,7 +84,6 @@ function App() {
       }
 
       const memo = 'Yo, Astriaaaa! the recipient on the rollup is: ' + recipient + '.';
-
 
       try {
         const gasUsed = await simulateMsgs(
