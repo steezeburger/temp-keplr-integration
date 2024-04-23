@@ -3,7 +3,7 @@ import {getKeplrFromWindow} from "./util/getKeplrFromWindow";
 import {CelestiaChainInfo} from "./constants";
 import {Balances} from "./types/balance";
 import {Dec, DecUtils} from "@keplr-wallet/unit";
-import {sendMsgs} from "./util/sendMsgs";
+// import {sendMsgs} from "./util/sendMsgs";
 import { sendIbcTransfer } from "./util/ibc-transfer";
 import {api} from "./util/api";
 import {simulateMsgs} from "./util/simulateMsgs";
@@ -11,6 +11,8 @@ import {MsgSend} from "./proto-types-gen/src/cosmos/bank/v1beta1/tx";
 import "./styles/container.css";
 import "./styles/button.css";
 import "./styles/item.css";
+import Long from "long";
+
 
 function App() {
   const [address, setAddress] = React.useState<string>('');
@@ -63,12 +65,11 @@ function App() {
     }
   }
 
-
-
-
   const sendBalance = async () => {
+
     if (window.keplr) {
       const key = await window.keplr.getKey(CelestiaChainInfo.chainId);
+      console.log('key: ', key)
       const protoMsgs = {
         typeUrl: "/cosmos.bank.v1beta1.MsgSend",
         value: MsgSend.encode({
@@ -83,30 +84,35 @@ function App() {
         }).finish(),
       }
 
-      const memo = 'Yo, Astriaaaa! the recipient on the rollup is: ' + recipient + '.';
+    //   const memo = 'Yo, Astriaaaa! the recipient on the rollup is: ' + recipient + '.';
 
       try {
-        const gasUsed = await simulateMsgs(
-          CelestiaChainInfo,
-          key.bech32Address,
-          [protoMsgs],
-          [{denom: "utia",
-            amount: "236",}]
-          );
+        // const gasUsed = await simulateMsgs(
+        //   CelestiaChainInfo,
+        //   key.bech32Address,
+        //   [protoMsgs],
+        //   [{denom: "utia",
+        //     amount: "236",}]
+        //   );
 
-        if(gasUsed) {
-          await sendMsgs(
-            window.keplr,
-            CelestiaChainInfo,
-            key.bech32Address,
-            [protoMsgs],
-            {
-              amount: [{denom: "utia",
-                amount: "236",}],
-              gas: Math.floor(gasUsed * 1.5).toString(),
-            },
-            memo)
-        }
+        // if(gasUsed) {
+            // the origianal way keplr-example sent funds:
+        //   await sendMsgs(
+        //     window.keplr,
+        //     CelestiaChainInfo,
+        //     key.bech32Address,
+        //     [protoMsgs],
+        //     {
+        //       amount: [{denom: "utia",
+        //         amount: "236",}],
+        //       gas: Math.floor(gasUsed * 1.5).toString(),
+        //     },
+        //     memo)
+        // }
+        const accountNumber: Long = Long.fromString('0')
+
+        await sendIbcTransfer(key.bech32Address, accountNumber, recipient, amount)
+        // }
       } catch (e) {
         if (e instanceof Error) {
           console.log(e.message);
