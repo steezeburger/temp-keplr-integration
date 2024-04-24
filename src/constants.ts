@@ -31,16 +31,7 @@ export const CelestiaChainInfo: ChainInfo = {
         // 'Purpose' is fixed to 44.
         coinType: 118,
     },
-    // Bech32 configuration to show the address to user.
-    // This field is the interface of
-    // {
-    //   bech32PrefixAccAddr: string;
-    //   bech32PrefixAccPub: string;
-    //   bech32PrefixValAddr: string;
-    //   bech32PrefixValPub: string;
-    //   bech32PrefixConsAddr: string;
-    //   bech32PrefixConsPub: string;
-    // }
+
     bech32Config: {
         bech32PrefixAccAddr: 'celestia',
         bech32PrefixAccPub: 'celestiapub',
@@ -104,7 +95,7 @@ export const AstriaChainInfo: ChainInfo = {
         // Actual denom (i.e. uatom, uscrt) used by the blockchain.
         coinMinimalDenom: 'nria',
         // # of decimal points to convert minimal denomination to user-facing denomination.
-        coinDecimals: 19,
+        coinDecimals: 9,
         // (Optional) Keplr can show the fiat value of the coin if a coingecko id is provided.
         // You can get id from https://api.coingecko.com/api/v3/coins/list if it is listed.
         // coinGeckoId: ""
@@ -144,7 +135,7 @@ export const AstriaChainInfo: ChainInfo = {
             // Actual denom (i.e. uatom, uscrt) used by the blockchain.
             coinMinimalDenom: 'nria',
             // # of decimal points to convert minimal denomination to user-facing denomination.
-            coinDecimals: 19,
+            coinDecimals: 9,
             // (Optional) Keplr can show the fiat value of the coin if a coingecko id is provided.
             // You can get id from https://api.coingecko.com/api/v3/coins/list if it is listed.
             // coinGeckoId: ""
