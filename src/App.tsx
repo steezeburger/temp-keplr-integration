@@ -78,13 +78,11 @@ function App() {
           amount: [
             {
               denom: "utia",
-              amount: DecUtils.getTenExponentN(6).mul(new Dec(amount)).truncate().toString(),
+              amount: DecUtils.getTenExponentN(9).mul(new Dec(amount)).truncate().toString(),
             },
           ],
         }).finish(),
       }
-
-    //   const memo = 'Yo, Astriaaaa! the recipient on the rollup is: ' + recipient + '.';
 
       try {
         // const gasUsed = await simulateMsgs(
@@ -111,7 +109,7 @@ function App() {
         // }
         const accountNumber: Long = Long.fromString('0')
 
-        await sendIbcTransfer(key.bech32Address, accountNumber, recipient, amount)
+        await sendIbcTransfer(key.bech32Address, accountNumber, recipient, DecUtils.getTenExponentN(6).mul(new Dec(amount)).truncate().toString())
         // }
       } catch (e) {
         if (e instanceof Error) {
