@@ -3,8 +3,7 @@ import {getKeplrFromWindow} from "./util/getKeplrFromWindow";
 import {CelestiaChainInfo} from "./constants";
 import {Balances} from "./types/balance";
 import {Dec, DecUtils} from "@keplr-wallet/unit";
-// import {sendMsgs} from "./util/sendMsgs";
-import { sendIbcTransfer } from "./util/ibc-transfer";
+import { sendIbcTransfer } from "./util/ibcTransfer";
 import {api} from "./util/api";
 import {simulateMsgs} from "./util/simulateMsgs";
 import {MsgSend} from "./proto-types-gen/src/cosmos/bank/v1beta1/tx";
@@ -84,6 +83,10 @@ function App() {
         }).finish(),
       }
 
+      // @todo get this from keplr connected account?
+      const accountNumber: Long = Long.fromString('0')
+
+
       try {
         // const gasUsed = await simulateMsgs(
         //   CelestiaChainInfo,
@@ -94,23 +97,9 @@ function App() {
         //   );
 
         // if(gasUsed) {
-            // the origianal way keplr-example sent funds:
-        //   await sendMsgs(
-        //     window.keplr,
-        //     CelestiaChainInfo,
-        //     key.bech32Address,
-        //     [protoMsgs],
-        //     {
-        //       amount: [{denom: "utia",
-        //         amount: "236",}],
-        //       gas: Math.floor(gasUsed * 1.5).toString(),
-        //     },
-        //     memo)
+            await sendIbcTransfer(key.bech32Address, accountNumber, recipient, DecUtils.getTenExponentN(6).mul(new Dec(amount)).truncate().toString())
         // }
-        const accountNumber: Long = Long.fromString('0')
 
-        await sendIbcTransfer(key.bech32Address, accountNumber, recipient, DecUtils.getTenExponentN(6).mul(new Dec(amount)).truncate().toString())
-        // }
       } catch (e) {
         if (e instanceof Error) {
           console.log(e.message);
