@@ -2,15 +2,13 @@ import { CelestiaChainInfo, AstriaChainInfo } from '../constants'
 import { SigningStargateClient } from '@cosmjs/stargate'
 import Long from 'long'
 
-// @todo change this to the correct address (the sequencer bridge account.), currently set to a personal dev wallet.
-const SEQUENCER = 'ria1p4z7yurh9ya3egqfld3xn6v4fyzph6qsq8w845'
+const SEQUENCER_ACCOUNT = '1c0c490f1b5528d8173c5de46d131160e4b2c0c3'
 const DENOM = 'utia'
 
 export const sendIbcTransfer = async (
     sender: string,
-    accountNumber: Long,
     recipient: string,
-    bridge_amount: string
+    amount: string
 ) => {
     if (window.keplr) {
         const keplr = window.keplr
@@ -48,13 +46,13 @@ export const sendIbcTransfer = async (
             typeUrl: '/ibc.applications.transfer.v1.MsgTransfer',
             value: {
                 sourcePort: 'transfer',
-                sourceChannel: 'channel-84',
+                sourceChannel: 'channel-0',
                 token: {
                     denom: DENOM,
-                    amount: bridge_amount,
+                    amount: amount,
                 },
                 sender: sender,
-                receiver: SEQUENCER,
+                receiver: SEQUENCER_ACCOUNT,
                 // Timeout is in nanoseconds. Use Long.UZERO for default timeout
                 timeoutTimestamp: Long.fromNumber(
                     Date.now() + 600_000
@@ -70,6 +68,7 @@ export const sendIbcTransfer = async (
                 fee,
                 memo
             )
+            console.log('Transaction result: ', result)
         } else {
             console.error('Account not found')
         }

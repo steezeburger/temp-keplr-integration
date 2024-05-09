@@ -152,10 +152,10 @@ export const Plan = {
 
   fromJSON(object: any): Plan {
     return {
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? String(object.name) : "",
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
-      height: isSet(object.height) ? globalThis.String(object.height) : "0",
-      info: isSet(object.info) ? globalThis.String(object.info) : "",
+      height: isSet(object.height) ? String(object.height) : "0",
+      info: isSet(object.info) ? String(object.info) : "",
       upgradedClientState: isSet(object.upgradedClientState) ? Any.fromJSON(object.upgradedClientState) : undefined,
     };
   },
@@ -253,8 +253,8 @@ export const SoftwareUpgradeProposal = {
 
   fromJSON(object: any): SoftwareUpgradeProposal {
     return {
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      title: isSet(object.title) ? String(object.title) : "",
+      description: isSet(object.description) ? String(object.description) : "",
       plan: isSet(object.plan) ? Plan.fromJSON(object.plan) : undefined,
     };
   },
@@ -332,8 +332,8 @@ export const CancelSoftwareUpgradeProposal = {
 
   fromJSON(object: any): CancelSoftwareUpgradeProposal {
     return {
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      title: isSet(object.title) ? String(object.title) : "",
+      description: isSet(object.description) ? String(object.description) : "",
     };
   },
 
@@ -408,8 +408,8 @@ export const ModuleVersion = {
 
   fromJSON(object: any): ModuleVersion {
     return {
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      version: isSet(object.version) ? globalThis.String(object.version) : "0",
+      name: isSet(object.name) ? String(object.name) : "",
+      version: isSet(object.version) ? String(object.version) : "0",
     };
   },
 
@@ -438,8 +438,7 @@ export const ModuleVersion = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
@@ -454,16 +453,16 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = (globalThis.Number(t.seconds) || 0) * 1_000;
+  let millis = (Number(t.seconds) || 0) * 1_000;
   millis += (t.nanos || 0) / 1_000_000;
-  return new globalThis.Date(millis);
+  return new Date(millis);
 }
 
 function fromJsonTimestamp(o: any): Date {
-  if (o instanceof globalThis.Date) {
+  if (o instanceof Date) {
     return o;
   } else if (typeof o === "string") {
-    return new globalThis.Date(o);
+    return new Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }

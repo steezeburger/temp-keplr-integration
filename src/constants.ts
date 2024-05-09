@@ -1,14 +1,15 @@
 import { ChainInfo } from '@keplr-wallet/types'
 
 export const CelestiaChainInfo: ChainInfo = {
-    // Chain-id of the riasis chain.
-    chainId: 'mocha-4',
+    // Chain-id of the celestia chain.
+    chainId: 'celestia-local',
     // The name of the chain to be displayed to the user.
-    chainName: 'Mocha',
+    chainName: 'celestia-local',
     // RPC endpoint of the chain. In this case we are using blockapsis, as it's accepts connections from any host currently. No Cors limitations.
-    rpc: 'https://rpc.celestia-mocha.com',
+    rpc: 'ws://localhost:27050',
     // REST endpoint of the chain.
-    rest: 'https://api-mocha.pops.one',
+    // rest: 'https://api-mocha.pops.one',
+    rest: 'http://localhost:1317',
     // Staking coin information
     stakeCurrency: {
         // Coin denomination to be displayed to the user.
@@ -80,13 +81,15 @@ export const CelestiaChainInfo: ChainInfo = {
 
 export const AstriaChainInfo: ChainInfo = {
     // Chain-id of the riasis chain.
-    chainId: 'dusk-4',
+    chainId: 'astria',
     // The name of the chain to be displayed to the user.
-    chainName: 'Dusk',
+    chainName: 'astria',
     // RPC endpoint of the chain. In this case we are using blockapsis, as it's accepts connections from any host currently. No Cors limitations.
-    rpc: 'https://rpc.sequencer.dusk-4.devnet.astria.org',
+    // rpc: 'https://rpc.sequencer.dusk-4.devnet.astria.org',
+    rpc: 'ws://localhost:26657',
     // REST endpoint of the chain.
-    rest: 'https://api-mocha.pops.one',
+    // rest: 'https://api-mocha.pops.one',
+    rest: 'http://localhost:26657',
     // Staking coin information
     stakeCurrency: {
         // Coin denomination to be displayed to the user.

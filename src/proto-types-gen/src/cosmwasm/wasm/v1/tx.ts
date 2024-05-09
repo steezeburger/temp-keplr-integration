@@ -174,7 +174,7 @@ export const MsgStoreCode = {
 
   fromJSON(object: any): MsgStoreCode {
     return {
-      sender: isSet(object.sender) ? globalThis.String(object.sender) : "",
+      sender: isSet(object.sender) ? String(object.sender) : "",
       wasmByteCode: isSet(object.wasmByteCode) ? bytesFromBase64(object.wasmByteCode) : new Uint8Array(0),
       instantiatePermission: isSet(object.instantiatePermission)
         ? AccessConfig.fromJSON(object.instantiatePermission)
@@ -247,7 +247,7 @@ export const MsgStoreCodeResponse = {
   },
 
   fromJSON(object: any): MsgStoreCodeResponse {
-    return { codeId: isSet(object.codeId) ? globalThis.String(object.codeId) : "0" };
+    return { codeId: isSet(object.codeId) ? String(object.codeId) : "0" };
   },
 
   toJSON(message: MsgStoreCodeResponse): unknown {
@@ -355,12 +355,12 @@ export const MsgInstantiateContract = {
 
   fromJSON(object: any): MsgInstantiateContract {
     return {
-      sender: isSet(object.sender) ? globalThis.String(object.sender) : "",
-      admin: isSet(object.admin) ? globalThis.String(object.admin) : "",
-      codeId: isSet(object.codeId) ? globalThis.String(object.codeId) : "0",
-      label: isSet(object.label) ? globalThis.String(object.label) : "",
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      admin: isSet(object.admin) ? String(object.admin) : "",
+      codeId: isSet(object.codeId) ? String(object.codeId) : "0",
+      label: isSet(object.label) ? String(object.label) : "",
       msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(0),
-      funds: globalThis.Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
+      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
     };
   },
 
@@ -449,7 +449,7 @@ export const MsgInstantiateContractResponse = {
 
   fromJSON(object: any): MsgInstantiateContractResponse {
     return {
-      address: isSet(object.address) ? globalThis.String(object.address) : "",
+      address: isSet(object.address) ? String(object.address) : "",
       data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
     };
   },
@@ -545,10 +545,10 @@ export const MsgExecuteContract = {
 
   fromJSON(object: any): MsgExecuteContract {
     return {
-      sender: isSet(object.sender) ? globalThis.String(object.sender) : "",
-      contract: isSet(object.contract) ? globalThis.String(object.contract) : "",
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      contract: isSet(object.contract) ? String(object.contract) : "",
       msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(0),
-      funds: globalThis.Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
+      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
     };
   },
 
@@ -706,9 +706,9 @@ export const MsgMigrateContract = {
 
   fromJSON(object: any): MsgMigrateContract {
     return {
-      sender: isSet(object.sender) ? globalThis.String(object.sender) : "",
-      contract: isSet(object.contract) ? globalThis.String(object.contract) : "",
-      codeId: isSet(object.codeId) ? globalThis.String(object.codeId) : "0",
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      contract: isSet(object.contract) ? String(object.contract) : "",
+      codeId: isSet(object.codeId) ? String(object.codeId) : "0",
       msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(0),
     };
   },
@@ -857,9 +857,9 @@ export const MsgUpdateAdmin = {
 
   fromJSON(object: any): MsgUpdateAdmin {
     return {
-      sender: isSet(object.sender) ? globalThis.String(object.sender) : "",
-      newAdmin: isSet(object.newAdmin) ? globalThis.String(object.newAdmin) : "",
-      contract: isSet(object.contract) ? globalThis.String(object.contract) : "",
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      newAdmin: isSet(object.newAdmin) ? String(object.newAdmin) : "",
+      contract: isSet(object.contract) ? String(object.contract) : "",
     };
   },
 
@@ -979,8 +979,8 @@ export const MsgClearAdmin = {
 
   fromJSON(object: any): MsgClearAdmin {
     return {
-      sender: isSet(object.sender) ? globalThis.String(object.sender) : "",
-      contract: isSet(object.contract) ? globalThis.String(object.contract) : "",
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      contract: isSet(object.contract) ? String(object.contract) : "",
     };
   },
 
@@ -1065,11 +1065,30 @@ export interface Msg {
   ClearAdmin(request: MsgClearAdmin): Promise<MsgClearAdminResponse>;
 }
 
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 function bytesFromBase64(b64: string): Uint8Array {
-  if ((globalThis as any).Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -1079,22 +1098,21 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if ((globalThis as any).Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
-      bin.push(globalThis.String.fromCharCode(byte));
+      bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

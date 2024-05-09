@@ -289,7 +289,7 @@ export const WeightedVoteOption = {
   fromJSON(object: any): WeightedVoteOption {
     return {
       option: isSet(object.option) ? voteOptionFromJSON(object.option) : 0,
-      weight: isSet(object.weight) ? globalThis.String(object.weight) : "",
+      weight: isSet(object.weight) ? String(object.weight) : "",
     };
   },
 
@@ -362,8 +362,8 @@ export const TextProposal = {
 
   fromJSON(object: any): TextProposal {
     return {
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      title: isSet(object.title) ? String(object.title) : "",
+      description: isSet(object.description) ? String(object.description) : "",
     };
   },
 
@@ -446,9 +446,9 @@ export const Deposit = {
 
   fromJSON(object: any): Deposit {
     return {
-      proposalId: isSet(object.proposalId) ? globalThis.String(object.proposalId) : "0",
-      depositor: isSet(object.depositor) ? globalThis.String(object.depositor) : "",
-      amount: globalThis.Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : [],
+      proposalId: isSet(object.proposalId) ? String(object.proposalId) : "0",
+      depositor: isSet(object.depositor) ? String(object.depositor) : "",
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : [],
     };
   },
 
@@ -605,15 +605,13 @@ export const Proposal = {
 
   fromJSON(object: any): Proposal {
     return {
-      proposalId: isSet(object.proposalId) ? globalThis.String(object.proposalId) : "0",
+      proposalId: isSet(object.proposalId) ? String(object.proposalId) : "0",
       content: isSet(object.content) ? Any.fromJSON(object.content) : undefined,
       status: isSet(object.status) ? proposalStatusFromJSON(object.status) : 0,
       finalTallyResult: isSet(object.finalTallyResult) ? TallyResult.fromJSON(object.finalTallyResult) : undefined,
       submitTime: isSet(object.submitTime) ? fromJsonTimestamp(object.submitTime) : undefined,
       depositEndTime: isSet(object.depositEndTime) ? fromJsonTimestamp(object.depositEndTime) : undefined,
-      totalDeposit: globalThis.Array.isArray(object?.totalDeposit)
-        ? object.totalDeposit.map((e: any) => Coin.fromJSON(e))
-        : [],
+      totalDeposit: Array.isArray(object?.totalDeposit) ? object.totalDeposit.map((e: any) => Coin.fromJSON(e)) : [],
       votingStartTime: isSet(object.votingStartTime) ? fromJsonTimestamp(object.votingStartTime) : undefined,
       votingEndTime: isSet(object.votingEndTime) ? fromJsonTimestamp(object.votingEndTime) : undefined,
     };
@@ -740,10 +738,10 @@ export const TallyResult = {
 
   fromJSON(object: any): TallyResult {
     return {
-      yes: isSet(object.yes) ? globalThis.String(object.yes) : "",
-      abstain: isSet(object.abstain) ? globalThis.String(object.abstain) : "",
-      no: isSet(object.no) ? globalThis.String(object.no) : "",
-      noWithVeto: isSet(object.noWithVeto) ? globalThis.String(object.noWithVeto) : "",
+      yes: isSet(object.yes) ? String(object.yes) : "",
+      abstain: isSet(object.abstain) ? String(object.abstain) : "",
+      no: isSet(object.no) ? String(object.no) : "",
+      noWithVeto: isSet(object.noWithVeto) ? String(object.noWithVeto) : "",
     };
   },
 
@@ -844,12 +842,10 @@ export const Vote = {
 
   fromJSON(object: any): Vote {
     return {
-      proposalId: isSet(object.proposalId) ? globalThis.String(object.proposalId) : "0",
-      voter: isSet(object.voter) ? globalThis.String(object.voter) : "",
+      proposalId: isSet(object.proposalId) ? String(object.proposalId) : "0",
+      voter: isSet(object.voter) ? String(object.voter) : "",
       option: isSet(object.option) ? voteOptionFromJSON(object.option) : 0,
-      options: globalThis.Array.isArray(object?.options)
-        ? object.options.map((e: any) => WeightedVoteOption.fromJSON(e))
-        : [],
+      options: Array.isArray(object?.options) ? object.options.map((e: any) => WeightedVoteOption.fromJSON(e)) : [],
     };
   },
 
@@ -930,9 +926,7 @@ export const DepositParams = {
 
   fromJSON(object: any): DepositParams {
     return {
-      minDeposit: globalThis.Array.isArray(object?.minDeposit)
-        ? object.minDeposit.map((e: any) => Coin.fromJSON(e))
-        : [],
+      minDeposit: Array.isArray(object?.minDeposit) ? object.minDeposit.map((e: any) => Coin.fromJSON(e)) : [],
       maxDepositPeriod: isSet(object.maxDepositPeriod) ? Duration.fromJSON(object.maxDepositPeriod) : undefined,
     };
   },
@@ -1109,11 +1103,30 @@ export const TallyParams = {
   },
 };
 
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 function bytesFromBase64(b64: string): Uint8Array {
-  if ((globalThis as any).Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -1123,22 +1136,21 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if ((globalThis as any).Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
-      bin.push(globalThis.String.fromCharCode(byte));
+      bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
@@ -1153,16 +1165,16 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = (globalThis.Number(t.seconds) || 0) * 1_000;
+  let millis = (Number(t.seconds) || 0) * 1_000;
   millis += (t.nanos || 0) / 1_000_000;
-  return new globalThis.Date(millis);
+  return new Date(millis);
 }
 
 function fromJsonTimestamp(o: any): Date {
-  if (o instanceof globalThis.Date) {
+  if (o instanceof Date) {
     return o;
   } else if (typeof o === "string") {
-    return new globalThis.Date(o);
+    return new Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }

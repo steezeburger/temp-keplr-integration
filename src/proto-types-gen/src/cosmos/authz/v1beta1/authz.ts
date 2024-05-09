@@ -59,7 +59,7 @@ export const GenericAuthorization = {
   },
 
   fromJSON(object: any): GenericAuthorization {
-    return { msg: isSet(object.msg) ? globalThis.String(object.msg) : "" };
+    return { msg: isSet(object.msg) ? String(object.msg) : "" };
   },
 
   toJSON(message: GenericAuthorization): unknown {
@@ -159,8 +159,7 @@ export const Grant = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
@@ -175,16 +174,16 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = (globalThis.Number(t.seconds) || 0) * 1_000;
+  let millis = (Number(t.seconds) || 0) * 1_000;
   millis += (t.nanos || 0) / 1_000_000;
-  return new globalThis.Date(millis);
+  return new Date(millis);
 }
 
 function fromJsonTimestamp(o: any): Date {
-  if (o instanceof globalThis.Date) {
+  if (o instanceof Date) {
     return o;
   } else if (typeof o === "string") {
-    return new globalThis.Date(o);
+    return new Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }

@@ -71,8 +71,8 @@ export const SwapAmountInRoute = {
 
   fromJSON(object: any): SwapAmountInRoute {
     return {
-      poolId: isSet(object.poolId) ? globalThis.String(object.poolId) : "0",
-      tokenOutDenom: isSet(object.tokenOutDenom) ? globalThis.String(object.tokenOutDenom) : "",
+      poolId: isSet(object.poolId) ? String(object.poolId) : "0",
+      tokenOutDenom: isSet(object.tokenOutDenom) ? String(object.tokenOutDenom) : "",
     };
   },
 
@@ -145,8 +145,8 @@ export const SwapAmountOutRoute = {
 
   fromJSON(object: any): SwapAmountOutRoute {
     return {
-      poolId: isSet(object.poolId) ? globalThis.String(object.poolId) : "0",
-      tokenInDenom: isSet(object.tokenInDenom) ? globalThis.String(object.tokenInDenom) : "",
+      poolId: isSet(object.poolId) ? String(object.poolId) : "0",
+      tokenInDenom: isSet(object.tokenInDenom) ? String(object.tokenInDenom) : "",
     };
   },
 
@@ -219,8 +219,8 @@ export const SwapAmountInSplitRoute = {
 
   fromJSON(object: any): SwapAmountInSplitRoute {
     return {
-      pools: globalThis.Array.isArray(object?.pools) ? object.pools.map((e: any) => SwapAmountInRoute.fromJSON(e)) : [],
-      tokenInAmount: isSet(object.tokenInAmount) ? globalThis.String(object.tokenInAmount) : "",
+      pools: Array.isArray(object?.pools) ? object.pools.map((e: any) => SwapAmountInRoute.fromJSON(e)) : [],
+      tokenInAmount: isSet(object.tokenInAmount) ? String(object.tokenInAmount) : "",
     };
   },
 
@@ -293,10 +293,8 @@ export const SwapAmountOutSplitRoute = {
 
   fromJSON(object: any): SwapAmountOutSplitRoute {
     return {
-      pools: globalThis.Array.isArray(object?.pools)
-        ? object.pools.map((e: any) => SwapAmountOutRoute.fromJSON(e))
-        : [],
-      tokenOutAmount: isSet(object.tokenOutAmount) ? globalThis.String(object.tokenOutAmount) : "",
+      pools: Array.isArray(object?.pools) ? object.pools.map((e: any) => SwapAmountOutRoute.fromJSON(e)) : [],
+      tokenOutAmount: isSet(object.tokenOutAmount) ? String(object.tokenOutAmount) : "",
     };
   },
 
@@ -325,8 +323,7 @@ export const SwapAmountOutSplitRoute = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

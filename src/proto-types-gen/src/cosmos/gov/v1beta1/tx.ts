@@ -113,10 +113,10 @@ export const MsgSubmitProposal = {
   fromJSON(object: any): MsgSubmitProposal {
     return {
       content: isSet(object.content) ? Any.fromJSON(object.content) : undefined,
-      initialDeposit: globalThis.Array.isArray(object?.initialDeposit)
+      initialDeposit: Array.isArray(object?.initialDeposit)
         ? object.initialDeposit.map((e: any) => Coin.fromJSON(e))
         : [],
-      proposer: isSet(object.proposer) ? globalThis.String(object.proposer) : "",
+      proposer: isSet(object.proposer) ? String(object.proposer) : "",
     };
   },
 
@@ -184,7 +184,7 @@ export const MsgSubmitProposalResponse = {
   },
 
   fromJSON(object: any): MsgSubmitProposalResponse {
-    return { proposalId: isSet(object.proposalId) ? globalThis.String(object.proposalId) : "0" };
+    return { proposalId: isSet(object.proposalId) ? String(object.proposalId) : "0" };
   },
 
   toJSON(message: MsgSubmitProposalResponse): unknown {
@@ -262,8 +262,8 @@ export const MsgVote = {
 
   fromJSON(object: any): MsgVote {
     return {
-      proposalId: isSet(object.proposalId) ? globalThis.String(object.proposalId) : "0",
-      voter: isSet(object.voter) ? globalThis.String(object.voter) : "",
+      proposalId: isSet(object.proposalId) ? String(object.proposalId) : "0",
+      voter: isSet(object.voter) ? String(object.voter) : "",
       option: isSet(object.option) ? voteOptionFromJSON(object.option) : 0,
     };
   },
@@ -394,11 +394,9 @@ export const MsgVoteWeighted = {
 
   fromJSON(object: any): MsgVoteWeighted {
     return {
-      proposalId: isSet(object.proposalId) ? globalThis.String(object.proposalId) : "0",
-      voter: isSet(object.voter) ? globalThis.String(object.voter) : "",
-      options: globalThis.Array.isArray(object?.options)
-        ? object.options.map((e: any) => WeightedVoteOption.fromJSON(e))
-        : [],
+      proposalId: isSet(object.proposalId) ? String(object.proposalId) : "0",
+      voter: isSet(object.voter) ? String(object.voter) : "",
+      options: Array.isArray(object?.options) ? object.options.map((e: any) => WeightedVoteOption.fromJSON(e)) : [],
     };
   },
 
@@ -528,9 +526,9 @@ export const MsgDeposit = {
 
   fromJSON(object: any): MsgDeposit {
     return {
-      proposalId: isSet(object.proposalId) ? globalThis.String(object.proposalId) : "0",
-      depositor: isSet(object.depositor) ? globalThis.String(object.depositor) : "",
-      amount: globalThis.Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : [],
+      proposalId: isSet(object.proposalId) ? String(object.proposalId) : "0",
+      depositor: isSet(object.depositor) ? String(object.depositor) : "",
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : [],
     };
   },
 
@@ -618,8 +616,7 @@ export interface Msg {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

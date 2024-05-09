@@ -160,7 +160,7 @@ export const SignatureDescriptors = {
 
   fromJSON(object: any): SignatureDescriptors {
     return {
-      signatures: globalThis.Array.isArray(object?.signatures)
+      signatures: Array.isArray(object?.signatures)
         ? object.signatures.map((e: any) => SignatureDescriptor.fromJSON(e))
         : [],
     };
@@ -243,7 +243,7 @@ export const SignatureDescriptor = {
     return {
       publicKey: isSet(object.publicKey) ? Any.fromJSON(object.publicKey) : undefined,
       data: isSet(object.data) ? SignatureDescriptor_Data.fromJSON(object.data) : undefined,
-      sequence: isSet(object.sequence) ? globalThis.String(object.sequence) : "0",
+      sequence: isSet(object.sequence) ? String(object.sequence) : "0",
     };
   },
 
@@ -479,7 +479,7 @@ export const SignatureDescriptor_Data_Multi = {
   fromJSON(object: any): SignatureDescriptor_Data_Multi {
     return {
       bitarray: isSet(object.bitarray) ? CompactBitArray.fromJSON(object.bitarray) : undefined,
-      signatures: globalThis.Array.isArray(object?.signatures)
+      signatures: Array.isArray(object?.signatures)
         ? object.signatures.map((e: any) => SignatureDescriptor_Data.fromJSON(e))
         : [],
     };
@@ -511,11 +511,30 @@ export const SignatureDescriptor_Data_Multi = {
   },
 };
 
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 function bytesFromBase64(b64: string): Uint8Array {
-  if ((globalThis as any).Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -525,22 +544,21 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if ((globalThis as any).Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
-      bin.push(globalThis.String.fromCharCode(byte));
+      bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

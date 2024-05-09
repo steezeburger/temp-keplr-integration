@@ -94,7 +94,7 @@ export const Params = {
     for (const v of message.sendEnabled) {
       SendEnabled.encode(v!, writer.uint32(10).fork()).ldelim();
     }
-    if (message.defaultSendEnabled !== false) {
+    if (message.defaultSendEnabled === true) {
       writer.uint32(16).bool(message.defaultSendEnabled);
     }
     return writer;
@@ -132,10 +132,10 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      sendEnabled: globalThis.Array.isArray(object?.sendEnabled)
+      sendEnabled: Array.isArray(object?.sendEnabled)
         ? object.sendEnabled.map((e: any) => SendEnabled.fromJSON(e))
         : [],
-      defaultSendEnabled: isSet(object.defaultSendEnabled) ? globalThis.Boolean(object.defaultSendEnabled) : false,
+      defaultSendEnabled: isSet(object.defaultSendEnabled) ? Boolean(object.defaultSendEnabled) : false,
     };
   },
 
@@ -144,7 +144,7 @@ export const Params = {
     if (message.sendEnabled?.length) {
       obj.sendEnabled = message.sendEnabled.map((e) => SendEnabled.toJSON(e));
     }
-    if (message.defaultSendEnabled !== false) {
+    if (message.defaultSendEnabled === true) {
       obj.defaultSendEnabled = message.defaultSendEnabled;
     }
     return obj;
@@ -170,7 +170,7 @@ export const SendEnabled = {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
-    if (message.enabled !== false) {
+    if (message.enabled === true) {
       writer.uint32(16).bool(message.enabled);
     }
     return writer;
@@ -208,8 +208,8 @@ export const SendEnabled = {
 
   fromJSON(object: any): SendEnabled {
     return {
-      denom: isSet(object.denom) ? globalThis.String(object.denom) : "",
-      enabled: isSet(object.enabled) ? globalThis.Boolean(object.enabled) : false,
+      denom: isSet(object.denom) ? String(object.denom) : "",
+      enabled: isSet(object.enabled) ? Boolean(object.enabled) : false,
     };
   },
 
@@ -218,7 +218,7 @@ export const SendEnabled = {
     if (message.denom !== "") {
       obj.denom = message.denom;
     }
-    if (message.enabled !== false) {
+    if (message.enabled === true) {
       obj.enabled = message.enabled;
     }
     return obj;
@@ -282,8 +282,8 @@ export const Input = {
 
   fromJSON(object: any): Input {
     return {
-      address: isSet(object.address) ? globalThis.String(object.address) : "",
-      coins: globalThis.Array.isArray(object?.coins) ? object.coins.map((e: any) => Coin.fromJSON(e)) : [],
+      address: isSet(object.address) ? String(object.address) : "",
+      coins: Array.isArray(object?.coins) ? object.coins.map((e: any) => Coin.fromJSON(e)) : [],
     };
   },
 
@@ -356,8 +356,8 @@ export const Output = {
 
   fromJSON(object: any): Output {
     return {
-      address: isSet(object.address) ? globalThis.String(object.address) : "",
-      coins: globalThis.Array.isArray(object?.coins) ? object.coins.map((e: any) => Coin.fromJSON(e)) : [],
+      address: isSet(object.address) ? String(object.address) : "",
+      coins: Array.isArray(object?.coins) ? object.coins.map((e: any) => Coin.fromJSON(e)) : [],
     };
   },
 
@@ -419,7 +419,7 @@ export const Supply = {
   },
 
   fromJSON(object: any): Supply {
-    return { total: globalThis.Array.isArray(object?.total) ? object.total.map((e: any) => Coin.fromJSON(e)) : [] };
+    return { total: Array.isArray(object?.total) ? object.total.map((e: any) => Coin.fromJSON(e)) : [] };
   },
 
   toJSON(message: Supply): unknown {
@@ -497,9 +497,9 @@ export const DenomUnit = {
 
   fromJSON(object: any): DenomUnit {
     return {
-      denom: isSet(object.denom) ? globalThis.String(object.denom) : "",
-      exponent: isSet(object.exponent) ? globalThis.Number(object.exponent) : 0,
-      aliases: globalThis.Array.isArray(object?.aliases) ? object.aliases.map((e: any) => globalThis.String(e)) : [],
+      denom: isSet(object.denom) ? String(object.denom) : "",
+      exponent: isSet(object.exponent) ? Number(object.exponent) : 0,
+      aliases: Array.isArray(object?.aliases) ? object.aliases.map((e: any) => String(e)) : [],
     };
   },
 
@@ -616,14 +616,12 @@ export const Metadata = {
 
   fromJSON(object: any): Metadata {
     return {
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
-      denomUnits: globalThis.Array.isArray(object?.denomUnits)
-        ? object.denomUnits.map((e: any) => DenomUnit.fromJSON(e))
-        : [],
-      base: isSet(object.base) ? globalThis.String(object.base) : "",
-      display: isSet(object.display) ? globalThis.String(object.display) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      symbol: isSet(object.symbol) ? globalThis.String(object.symbol) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+      denomUnits: Array.isArray(object?.denomUnits) ? object.denomUnits.map((e: any) => DenomUnit.fromJSON(e)) : [],
+      base: isSet(object.base) ? String(object.base) : "",
+      display: isSet(object.display) ? String(object.display) : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      symbol: isSet(object.symbol) ? String(object.symbol) : "",
     };
   },
 
@@ -668,8 +666,7 @@ export const Metadata = {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

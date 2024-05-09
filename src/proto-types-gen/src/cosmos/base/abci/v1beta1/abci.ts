@@ -301,18 +301,18 @@ export const TxResponse = {
 
   fromJSON(object: any): TxResponse {
     return {
-      height: isSet(object.height) ? globalThis.String(object.height) : "0",
-      txhash: isSet(object.txhash) ? globalThis.String(object.txhash) : "",
-      codespace: isSet(object.codespace) ? globalThis.String(object.codespace) : "",
-      code: isSet(object.code) ? globalThis.Number(object.code) : 0,
-      data: isSet(object.data) ? globalThis.String(object.data) : "",
-      rawLog: isSet(object.rawLog) ? globalThis.String(object.rawLog) : "",
-      logs: globalThis.Array.isArray(object?.logs) ? object.logs.map((e: any) => ABCIMessageLog.fromJSON(e)) : [],
-      info: isSet(object.info) ? globalThis.String(object.info) : "",
-      gasWanted: isSet(object.gasWanted) ? globalThis.String(object.gasWanted) : "0",
-      gasUsed: isSet(object.gasUsed) ? globalThis.String(object.gasUsed) : "0",
+      height: isSet(object.height) ? String(object.height) : "0",
+      txhash: isSet(object.txhash) ? String(object.txhash) : "",
+      codespace: isSet(object.codespace) ? String(object.codespace) : "",
+      code: isSet(object.code) ? Number(object.code) : 0,
+      data: isSet(object.data) ? String(object.data) : "",
+      rawLog: isSet(object.rawLog) ? String(object.rawLog) : "",
+      logs: Array.isArray(object?.logs) ? object.logs.map((e: any) => ABCIMessageLog.fromJSON(e)) : [],
+      info: isSet(object.info) ? String(object.info) : "",
+      gasWanted: isSet(object.gasWanted) ? String(object.gasWanted) : "0",
+      gasUsed: isSet(object.gasUsed) ? String(object.gasUsed) : "0",
       tx: isSet(object.tx) ? Any.fromJSON(object.tx) : undefined,
-      timestamp: isSet(object.timestamp) ? globalThis.String(object.timestamp) : "",
+      timestamp: isSet(object.timestamp) ? String(object.timestamp) : "",
     };
   },
 
@@ -435,9 +435,9 @@ export const ABCIMessageLog = {
 
   fromJSON(object: any): ABCIMessageLog {
     return {
-      msgIndex: isSet(object.msgIndex) ? globalThis.Number(object.msgIndex) : 0,
-      log: isSet(object.log) ? globalThis.String(object.log) : "",
-      events: globalThis.Array.isArray(object?.events) ? object.events.map((e: any) => StringEvent.fromJSON(e)) : [],
+      msgIndex: isSet(object.msgIndex) ? Number(object.msgIndex) : 0,
+      log: isSet(object.log) ? String(object.log) : "",
+      events: Array.isArray(object?.events) ? object.events.map((e: any) => StringEvent.fromJSON(e)) : [],
     };
   },
 
@@ -514,10 +514,8 @@ export const StringEvent = {
 
   fromJSON(object: any): StringEvent {
     return {
-      type: isSet(object.type) ? globalThis.String(object.type) : "",
-      attributes: globalThis.Array.isArray(object?.attributes)
-        ? object.attributes.map((e: any) => Attribute.fromJSON(e))
-        : [],
+      type: isSet(object.type) ? String(object.type) : "",
+      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Attribute.fromJSON(e)) : [],
     };
   },
 
@@ -589,10 +587,7 @@ export const Attribute = {
   },
 
   fromJSON(object: any): Attribute {
-    return {
-      key: isSet(object.key) ? globalThis.String(object.key) : "",
-      value: isSet(object.value) ? globalThis.String(object.value) : "",
-    };
+    return { key: isSet(object.key) ? String(object.key) : "", value: isSet(object.value) ? String(object.value) : "" };
   },
 
   toJSON(message: Attribute): unknown {
@@ -664,8 +659,8 @@ export const GasInfo = {
 
   fromJSON(object: any): GasInfo {
     return {
-      gasWanted: isSet(object.gasWanted) ? globalThis.String(object.gasWanted) : "0",
-      gasUsed: isSet(object.gasUsed) ? globalThis.String(object.gasUsed) : "0",
+      gasWanted: isSet(object.gasWanted) ? String(object.gasWanted) : "0",
+      gasUsed: isSet(object.gasUsed) ? String(object.gasUsed) : "0",
     };
   },
 
@@ -749,8 +744,8 @@ export const Result = {
   fromJSON(object: any): Result {
     return {
       data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
-      log: isSet(object.log) ? globalThis.String(object.log) : "",
-      events: globalThis.Array.isArray(object?.events) ? object.events.map((e: any) => Event.fromJSON(e)) : [],
+      log: isSet(object.log) ? String(object.log) : "",
+      events: Array.isArray(object?.events) ? object.events.map((e: any) => Event.fromJSON(e)) : [],
     };
   },
 
@@ -905,7 +900,7 @@ export const MsgData = {
 
   fromJSON(object: any): MsgData {
     return {
-      msgType: isSet(object.msgType) ? globalThis.String(object.msgType) : "",
+      msgType: isSet(object.msgType) ? String(object.msgType) : "",
       data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
     };
   },
@@ -968,7 +963,7 @@ export const TxMsgData = {
   },
 
   fromJSON(object: any): TxMsgData {
-    return { data: globalThis.Array.isArray(object?.data) ? object.data.map((e: any) => MsgData.fromJSON(e)) : [] };
+    return { data: Array.isArray(object?.data) ? object.data.map((e: any) => MsgData.fromJSON(e)) : [] };
   },
 
   toJSON(message: TxMsgData): unknown {
@@ -1076,12 +1071,12 @@ export const SearchTxsResult = {
 
   fromJSON(object: any): SearchTxsResult {
     return {
-      totalCount: isSet(object.totalCount) ? globalThis.String(object.totalCount) : "0",
-      count: isSet(object.count) ? globalThis.String(object.count) : "0",
-      pageNumber: isSet(object.pageNumber) ? globalThis.String(object.pageNumber) : "0",
-      pageTotal: isSet(object.pageTotal) ? globalThis.String(object.pageTotal) : "0",
-      limit: isSet(object.limit) ? globalThis.String(object.limit) : "0",
-      txs: globalThis.Array.isArray(object?.txs) ? object.txs.map((e: any) => TxResponse.fromJSON(e)) : [],
+      totalCount: isSet(object.totalCount) ? String(object.totalCount) : "0",
+      count: isSet(object.count) ? String(object.count) : "0",
+      pageNumber: isSet(object.pageNumber) ? String(object.pageNumber) : "0",
+      pageTotal: isSet(object.pageTotal) ? String(object.pageTotal) : "0",
+      limit: isSet(object.limit) ? String(object.limit) : "0",
+      txs: Array.isArray(object?.txs) ? object.txs.map((e: any) => TxResponse.fromJSON(e)) : [],
     };
   },
 
@@ -1123,11 +1118,30 @@ export const SearchTxsResult = {
   },
 };
 
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 function bytesFromBase64(b64: string): Uint8Array {
-  if ((globalThis as any).Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -1137,22 +1151,21 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if ((globalThis as any).Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
-      bin.push(globalThis.String.fromCharCode(byte));
+      bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
