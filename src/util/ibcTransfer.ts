@@ -2,7 +2,8 @@ import { CelestiaChainInfo, AstriaChainInfo } from '../constants'
 import { SigningStargateClient } from '@cosmjs/stargate'
 import Long from 'long'
 
-const SEQUENCER_ACCOUNT = '1c0c490f1b5528d8173c5de46d131160e4b2c0c3'
+// const SEQUENCER_ACCOUNT = '1c0c490f1b5528d8173c5de46d131160e4b2c0c3'
+const SEQUENCER_ACCOUNT = 'edf770a8915cd3f70309c918c3d16671f59161e2'
 const DENOM = 'utia'
 
 export const sendIbcTransfer = async (
