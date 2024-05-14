@@ -53,6 +53,7 @@ export const sendIbcTransfer = async (
                     amount: amount,
                 },
                 sender: sender,
+                memo: memo,
                 receiver: SEQUENCER_ACCOUNT,
                 // Timeout is in nanoseconds. Use Long.UZERO for default timeout
                 timeoutTimestamp: Long.fromNumber(
@@ -67,7 +68,7 @@ export const sendIbcTransfer = async (
                 account.address,
                 [msgIBCTransfer],
                 fee,
-                memo
+                memo // FIXME - is this memo needed after realizing we moved it to `value`?
             )
             console.log('Transaction result: ', result)
         } else {
